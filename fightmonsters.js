@@ -4,6 +4,7 @@ function runFightMonsters() {
 var player = {
 	name: "Blank",
 	lvl: 1,
+	maxhp: 0,
 	hp: 0,
 	str: 0,
 	def: 0,
@@ -11,6 +12,33 @@ var player = {
 	exp: 0
 };
 
+var areas = {
+
+	outWitchesCave: {
+		name: "Outside the Witches Cave",
+		minLvl: 1,
+		maxLvl: 2
+	},
+	inWitchesCave1: {
+		name: "Witches Cave Room 1",
+		minLvl: 3,
+		maxLvl: 4
+	},
+	inCave2: {
+		name: "Witches Cave Room 2",
+		minLvl: 5,
+		maxLvl: 6
+	},
+	bossWitchesCave: {
+		name: "Witches Lair",
+		boss: bossNina
+	}
+};
+
+var prevArea;
+var currentArea;
+var nextArea;
+	
 var monsters = {
 
 	crow: {
@@ -76,12 +104,33 @@ var monsters = {
 };
 
 var bossNina = {
-	name: "Nina",
-	hp: 50,
+	name: "Nina the Evil Witch",
+	hp: 150,
 	str: 20,
 	def: 15,
 	spd: 10,
-	exp: 50
+	exp: 50,
+	fireBall: function() {
+		var damage = 5;
+		alert("Nina the Evil Witch casts a fireball at you! You take " + damage + " damage!");
+		player.hp -= damage;
+	},
+	witchesCurse: function() {
+		var damage = Math.floor(player.hp * 0.1);
+		alert("Nina the Evil Witch casts a curse on you, sucking the life from your soul!");
+		alert("You take " + damage + "damage!");
+		alert("Nina the Evil Witch restores " + damage + " HP!");
+		player.hp -= damage;
+		bossNina.hp += damage;
+	},
+	//Randomly choose which attack to use.
+	chooseAttack: function() {
+		if (Math.floor(getRandomInt(1, 4)) < 2) {
+			bossNina.witchesCurse();
+		} else {
+			bossNina.fireBall();
+		}
+	}
 };
 
 //Functions:
@@ -90,7 +139,8 @@ function getRandomInt(min, max) {
 }
 
 function rollChar() {
-	player.hp = Math.floor(getRandomInt(15,20));
+	player.maxhp = Math.floor(getRandomInt(15,20));
+	player.hp = player.maxhp;
 	player.str = Math.floor(getRandomInt(7,10));
 	player.def = Math.floor(getRandomInt(7,10));
 	player.spd = Math.floor(getRandomInt(8,12));
@@ -121,24 +171,27 @@ function cloneMonster(o) { //o = object, c = object copy
 function levelCheck() {
 		if (player.exp >= 20 && player.lvl < 2) {
 			alert("You leveled up to level 2!");
-				player.hp = Math.floor(player.hp * 1.2);
+				player.maxhp = Math.floor(player.maxhp * 1.2); //could put some of this in a function/method
 				player.str = Math.floor(player.str * 1.2);
 				player.def = Math.floor(player.def * 1.2);
 				player.spd = Math.floor(player.spd * 1.2);
+				player.hp = player.maxhp;
 				player.lvl = 2;
 		} else if (player.exp >= 45 && player.lvl < 3) {
 			alert("You leveled up to level 3!");
-				player.hp = Math.floor(player.hp * 1.2);
+				player.maxhp = Math.floor(player.maxhp * 1.2);
 				player.str = Math.floor(player.str * 1.2);
 				player.def = Math.floor(player.def * 1.2);				
 				player.spd = Math.floor(player.spd * 1.2);
+				player.hp = player.maxhp;				
 				player.lvl = 3;
 		} else if (player.exp >= 75 && player.lvl < 4){
 			alert("You leveled up to level 4!");
-				player.hp = Math.floor(player.hp * 1.2);
+				player.maxhp = Math.floor(player.maxhp * 1.2);
 				player.str = Math.floor(player.str * 1.2);
 				player.def = Math.floor(player.def * 1.2);				
 				player.spd = Math.floor(player.spd * 1.2);
+				player.hp = player.maxhp;
 				player.lvl = 4;
 		}
 }
@@ -171,6 +224,7 @@ function randomBattle(minLvl, maxLvl) { //minLvl and maxLvl: minimum and maximum
 	while (player.hp && clone.hp > 0) {
 		if (player.spd > clone.spd) {
 			console.log(player.hp, clone.hp);
+			
 			//Player attacks:
 			alert("Your speed stat is higher than the enemy " + clone.name + "'s! You attack first!");
 			clone.hp -= damageCalc(player);
@@ -179,6 +233,7 @@ function randomBattle(minLvl, maxLvl) { //minLvl and maxLvl: minimum and maximum
 					break;
 				}
 			alert("The " + clone.name + " has " + clone.hp + " HP left!");
+			
 			//monster attacks:
 			alert("The " + clone.name + " attacked!");
 			player.hp -= damageCalc(clone);	
@@ -191,13 +246,15 @@ function randomBattle(minLvl, maxLvl) { //minLvl and maxLvl: minimum and maximum
 			console.log(player.hp, clone.hp);	
 		} else if (player.spd <= clone.spd) {
 			console.log(player.hp, clone.hp);	
+			
 			//Monster attacks:
 			alert("Your speed stat is lower than the enemy " + clone.name + "'s! The " + clone.name + " attacks first!");
 			player.hp -= damageCalc(clone);	
 			alert("The " + clone.name + " hit you for " + damageCalc(clone) + " damage!");
 				if (player.hp <= 0) {
 					break;
-				}		
+				}	
+				
 			//Player attacks
 			alert("You attack the " + clone.name + "!");
 			clone.hp -= damageCalc(player);	
@@ -224,21 +281,62 @@ function randomBattle(minLvl, maxLvl) { //minLvl and maxLvl: minimum and maximum
 	console.log("LVL " + player.lvl);
 	console.log(player.hp, clone.hp);	
 	
-	clone = undefined;
+	//clone = undefined;
 }
 
+function bossBattleNina() {
+	alert(bossNina.name + ": 'Who dares enter my lair?!'");
+	alert("It is I, " + player.name + "! Here to slay the evil witch!");
+	alert(bossNina.name + ": Then prepare to be annihilated!");
+	
+	do {
+		//Boss attacks
+		bossNina.chooseAttack();
+		alert("You have " + player.hp + " left!");	
+		console.log("P:" + player.hp + " " + "B:" + bossNina.hp);
+		if (player.hp <= 0) {
+			break;
+		}
+		//Player attacks
+		bossNina.hp -=damageCalc(player);			
+		alert("You hit Nina the Evil Witch for " + damageCalc(player) + " damage!");
+		console.log("P:" + player.hp + " " + "B:" + bossNina.hp);
+		if (bossNina.hp <= 0) {
+			break;
+		}
+
+	} while (player.hp && bossNina.hp > 0);
+	
+	if (player.hp > 0) {
+		console.log("P WINS");
+		alert("Well done. You have rid the world of the evil witch! Turn back now, there is nothing left to do...");
+		player.exp += bossNina.exp;
+		alert("You gained " + bossNina.exp + " EXP!");
+	} else {
+		alert("P LOSES");
+		alert("Nina the Evil Witch: HAHAHA! No one can ever defeat me!!");
+		alert("You are dead. GAME OVER!");
+	}	
+}
 
 //GAME
 alert("Welcome! What is your name?");
 player.name = prompt("Enter your name");
 rollChar();
-alert("Your stats are:- Health: " + player.hp + ", Strength: " + player.str + ", Speed: " + player.spd);
-randomBattle(1,2); //I've got a feeling that having max and min lvl the same causes crashes. That feeling was wrong in the end...
+alert("Your stats are:- Health: " + player.maxhp + ", Strength: " + player.str + ", Speed: " + player.spd);
 randomBattle(1,2);
+console.log("maxhp" + player.maxhp + "hp" + player.hp);
+randomBattle(1,2);
+console.log("maxhp" + player.maxhp + "hp" + player.hp);
 randomBattle(3,4);
+console.log("maxhp" + player.maxhp + "hp" + player.hp);
 randomBattle(1,2); 
+console.log("maxhp" + player.maxhp + "hp" + player.hp);
 randomBattle(1,2);
+console.log("maxhp" + player.maxhp + "hp" + player.hp);
 randomBattle(3,4);
+console.log("maxhp" + player.maxhp + "hp" + player.hp);
+bossBattleNina();
 alert("WOO");
 
 }
