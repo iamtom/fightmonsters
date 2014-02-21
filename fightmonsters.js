@@ -22,9 +22,6 @@ var monsters = {
 		def: 2,
 		spd: 7,
 		exp: 5
-		/*scratch: function () {
-			//damage equation
-		}*/
 	},
 	gnome: {
 		name: "Gnome",
@@ -101,7 +98,7 @@ function rollChar() {
 	player.lvl = 1;
 }
 
-function damageCalc(a) { //a is attacker, d is defender. Should edit this to take into account the attackers chosen attack power
+function damageCalc(a) { //a is attacker, d is defender. Want to make this formula more complex later and use the defenders defence stat
 	var damage = a.str;
 	return damage;
 }
@@ -114,6 +111,7 @@ function cloneMonster(o) { //o = object, c = object copy
 	c.lvl = o.lvl;
 	c.hp = o.hp;
 	c.str = o.str;
+	c.def = o.def;
 	c.spd = o.spd;
 	c.exp = o.exp;
 	
@@ -142,34 +140,34 @@ function levelCheck() {
 				player.def = Math.floor(player.def * 1.2);				
 				player.spd = Math.floor(player.spd * 1.2);
 				player.lvl = 4;
-	}
+		}
 }
 
-function randomBattle(minLvl, maxLvl) { 
-	//Check if player is dead
-	if (player.hp <= 0) {
-		alert("You are dead and can not fight! You must heal first!");
-		//this kind of check should happen when hitting the "train" button and simply not allow the battle function to run.
-	}
-	//First, select the monster to spawn. Use minLvl and maxLvl to control the level of monster that appears.
-	//var chosenMonCopy = {};
+function randomBattle(minLvl, maxLvl) { //minLvl and maxLvl: minimum and maximum level of monster you want to spawn.
 	var possibleMons = []; //possible monsters
-	var level = Math.round(getRandomInt(minLvl, maxLvl));
+	//generate a random level from minLvl - maxLvl
+	var level = Math.round(getRandomInt(minLvl, maxLvl)); 
 	console.log("Level is " + level);
+	
+	//any monsters that match the level chosen earlier are added to possibleMons array
 	for (var key in monsters) {
 		if (monsters[key].lvl === level) {
-			//console.log(monsters[key]);
-			possibleMons.push(monsters[key]);
+			possibleMons.push(monsters[key]); 
 			console.log(possibleMons);
 		}
 	}
-	var chosenMon = possibleMons[Math.floor(Math.random() * possibleMons.length)]; //must clones chosenMon now since it just references and I dont want to edit the original
-	var clone = cloneMonster(chosenMon);
+	var chosenMon = possibleMons[Math.floor(Math.random() * possibleMons.length)]; //randomly choose one monster from the possibleMons
+	var clone = cloneMonster(chosenMon); //clone the chosenMon so we don't end up editing the original
 	console.log(clone);
 	console.log(clone.name);	
 	console.log("Clone HP:" + clone.hp);
 	alert("A wild " + clone.name + " appeared!");
-	console.log("TEST"); //sometimes crashes just after printing TEST
+	console.log("PLAYER:");
+	console.log(player);	
+	console.log("CLONE:");
+	console.log(clone);
+	console.log("TEST"); //sometimes crashes just after printing TEST. Not sure why. Something to do with the while loop below?
+	//Fighting
 	while (player.hp && clone.hp > 0) {
 		if (player.spd > clone.spd) {
 			console.log(player.hp, clone.hp);
@@ -191,7 +189,7 @@ function randomBattle(minLvl, maxLvl) {
 			alert("You have " + player.hp + " HP left!");
 				
 			console.log(player.hp, clone.hp);	
-		} else if (player.spd < clone.spd) {
+		} else if (player.spd <= clone.spd) {
 			console.log(player.hp, clone.hp);	
 			//Monster attacks:
 			alert("Your speed stat is lower than the enemy " + clone.name + "'s! The " + clone.name + " attacks first!");
@@ -211,8 +209,6 @@ function randomBattle(minLvl, maxLvl) {
 			alert("You have " + player.hp + " HP left!");
 			
 			console.log(player.hp, clone.hp);			
-		} else if (player.spd === clone.spd) {
-			
 		}
 	}	
 	if (player.hp > 0) {
