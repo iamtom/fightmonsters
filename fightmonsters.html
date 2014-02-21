@@ -2,10 +2,27 @@
 <html>
 	<head>
 		<title>JS Test File 2</title>
-		<script src="fightmonsters.js"></script>
-		
+
+		<link type="text/css" rel="stylesheet" href="stylesheet.css"/>	
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script src="fightmonsters.js"></script>		
 	</head>
 	<body>
-		<button onclick="runFightMonsters();">Monsters</button>		
+		<button id="lvl1_2btn">Fight Level 1/2 monsters</button>	
+		<button id="lvl3_4btn">Fight Level 3/4 monsters</button>
+		<button id="lvl5_6btn">Fight Level 5/6 monsters</button>
+		<button id="bossbtn">Fight the Boss</button>	
+		<br>
+		<button id="healbtn">Heal HP</button>
+		<div id="statdisplay">
+			<ul>
+				<li>LEVEL: </li>
+				<li>HEALTH: </li>
+				<li>STRENGTH: </li>
+				<li>DEFENCE: </li>
+				<li>SPEED: </li>
+				<li>EXPERIENCE: </li>				
+			</ul>
+		</div>
 	</body>
 </html>

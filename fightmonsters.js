@@ -1,5 +1,3 @@
-function runFightMonsters() {
-
 //Objects and variables
 var player = {
 	name: "Blank",
@@ -93,19 +91,39 @@ var monsters = {
 	},
 	rockman: {
 		name: "Rock Man",
-		id: 4,
+		id: 5,
 		lvl: 4,
 		hp: 10,
 		str: 5,
 		def: 10,
 		spd: 1,
 		exp: 13
+	},
+	cobra: {
+		name: "Cobra",
+		id: 6,
+		lvl: 5,
+		hp: 18,
+		str: 7,
+		def: 10,
+		spd: 10,
+		exp: 20
+	},
+	wolf: {
+		name: "Wolf",
+		id: 7,
+		lvl: 6,
+		hp: 22,
+		str: 10,
+		def: 10,
+		spd: 15,
+		exp: 22
 	}
 };
 
 var bossNina = {
 	name: "Nina the Evil Witch",
-	hp: 150,
+	hp: 100,
 	str: 20,
 	def: 15,
 	spd: 10,
@@ -171,28 +189,36 @@ function cloneMonster(o) { //o = object, c = object copy
 function levelCheck() {
 		if (player.exp >= 20 && player.lvl < 2) {
 			alert("You leveled up to level 2!");
-				player.maxhp = Math.floor(player.maxhp * 1.2); //could put some of this in a function/method
-				player.str = Math.floor(player.str * 1.2);
-				player.def = Math.floor(player.def * 1.2);
-				player.spd = Math.floor(player.spd * 1.2);
+				player.maxhp = Math.floor(player.maxhp * 1.25); //could put some of this in a function/method
+				player.str = Math.floor(player.str * 1.25);
+				player.def = Math.floor(player.def * 1.25);
+				player.spd = Math.floor(player.spd * 1.25);
 				player.hp = player.maxhp;
 				player.lvl = 2;
 		} else if (player.exp >= 45 && player.lvl < 3) {
 			alert("You leveled up to level 3!");
-				player.maxhp = Math.floor(player.maxhp * 1.2);
-				player.str = Math.floor(player.str * 1.2);
-				player.def = Math.floor(player.def * 1.2);				
-				player.spd = Math.floor(player.spd * 1.2);
+				player.maxhp = Math.floor(player.maxhp * 1.25);
+				player.str = Math.floor(player.str * 1.25);
+				player.def = Math.floor(player.def * 1.25);				
+				player.spd = Math.floor(player.spd * 1.25);
 				player.hp = player.maxhp;				
 				player.lvl = 3;
 		} else if (player.exp >= 75 && player.lvl < 4){
 			alert("You leveled up to level 4!");
-				player.maxhp = Math.floor(player.maxhp * 1.2);
-				player.str = Math.floor(player.str * 1.2);
-				player.def = Math.floor(player.def * 1.2);				
-				player.spd = Math.floor(player.spd * 1.2);
+				player.maxhp = Math.floor(player.maxhp * 1.25);
+				player.str = Math.floor(player.str * 1.25);
+				player.def = Math.floor(player.def * 1.25);				
+				player.spd = Math.floor(player.spd * 1.25);
 				player.hp = player.maxhp;
 				player.lvl = 4;
+		} else if (player.exp >= 75 && player.lvl < 5){
+			alert("You leveled up to level 5!");
+				player.maxhp = Math.floor(player.maxhp * 1.25);
+				player.str = Math.floor(player.str * 1.25);
+				player.def = Math.floor(player.def * 1.25);				
+				player.spd = Math.floor(player.spd * 1.25);
+				player.hp = player.maxhp;
+				player.lvl = 5;
 		}
 }
 
@@ -285,7 +311,7 @@ function randomBattle(minLvl, maxLvl) { //minLvl and maxLvl: minimum and maximum
 }
 
 function bossBattleNina() {
-	alert(bossNina.name + ": 'Who dares enter my lair?!'");
+	alert(bossNina.name + ": Who dares enter my lair?!");
 	alert("It is I, " + player.name + "! Here to slay the evil witch!");
 	alert(bossNina.name + ": Then prepare to be annihilated!");
 	
@@ -313,30 +339,38 @@ function bossBattleNina() {
 		player.exp += bossNina.exp;
 		alert("You gained " + bossNina.exp + " EXP!");
 	} else {
-		alert("P LOSES");
 		alert("Nina the Evil Witch: HAHAHA! No one can ever defeat me!!");
 		alert("You are dead. GAME OVER!");
 	}	
 }
 
 //GAME
-alert("Welcome! What is your name?");
-player.name = prompt("Enter your name");
-rollChar();
-alert("Your stats are:- Health: " + player.maxhp + ", Strength: " + player.str + ", Speed: " + player.spd);
-randomBattle(1,2);
-console.log("maxhp" + player.maxhp + "hp" + player.hp);
-randomBattle(1,2);
-console.log("maxhp" + player.maxhp + "hp" + player.hp);
-randomBattle(3,4);
-console.log("maxhp" + player.maxhp + "hp" + player.hp);
-randomBattle(1,2); 
-console.log("maxhp" + player.maxhp + "hp" + player.hp);
-randomBattle(1,2);
-console.log("maxhp" + player.maxhp + "hp" + player.hp);
-randomBattle(3,4);
-console.log("maxhp" + player.maxhp + "hp" + player.hp);
-bossBattleNina();
-alert("WOO");
+$(document).ready(function() {
+	alert("Welcome! What is your name?");
+	player.name = prompt("Enter your name");
+	rollChar();
+	alert("Your stats are:- Health: " + player.maxhp + ", Strength: " + player.str + ", Speed: " + player.spd);
+	
+	$('#lvl1_2btn').click(function() {
+		randomBattle(1,2);
+	});
+	
+	$('#lvl3_4btn').click(function() {
+		randomBattle(3,4);
+	});
+	
+	$('#lvl5_6btn').click(function() {
+		randomBattle(5,6);
+	});
+	
+	$('#bossbtn').click(function() {
+		bossBattleNina();
+	});
+	
+	$('#healbtn').click(function() {
+		player.hp = player.maxhp;
+	});
 
-}
+	//want to populate the list of stats with the stat values in the variables
+});
+
