@@ -1,3 +1,15 @@
+body {
+	background-color: blue;
+}
+
+p {
+	font-family: Courier;
+	color: white;
+	padding-left: 15px;
+	padding-right: 15px;
+	font-size: 12px;
+}
+
 #lvl1_2btn {
 }
 
@@ -17,5 +29,47 @@
 	height: 300px;
 	width: 200px;
 	background-color: grey;
+}
+
+#gameholder {
+	width: 640px;
+	height: 480px;
+	background-color: black;
+	border: 2px solid white;
+	position: relative;
+}
+
+#fightlvl1_2 {
+	border: 2px solid rgba(255,255,255,0.5);
+	width: auto;
+	height: auto;
+	position: absolute;
+	bottom: 0;
+	right: 355px;
+	margin: 10px;
+}
+
+#fightlvl3_4 {
+	border: 2px solid rgba(255,255,255,0.5);
+	width: auto;
+	height: auto;
+	position: absolute;
+	bottom: 0;
+	right: 180px;
+	margin: 10px;
+}
+
+#fightlvl5_6 {
+	border: 2px solid rgba(255,255,255,0.5);
+	width: auto;
+	height: auto;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin: 10px;
+}
+
+#fightlvl1_2:hover, #fightlvl3_4:hover, #fightlvl5_6:hover {
+	background-color: rgba(255,255,255,0.5);
 }
 

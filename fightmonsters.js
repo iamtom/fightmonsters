@@ -1,3 +1,5 @@
+$(document).ready(function() {
+
 //Objects and variables
 var player = {
 	name: "Blank",
@@ -344,23 +346,67 @@ function bossBattleNina() {
 	}	
 }
 
+function drawMainUI() {
+	canvas_context.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+	//draw UI
+	//box around stats
+	canvas_context.strokeStyle = "white";
+	canvas_context.strokeRect(0, 30, 190, 185);	
+	
+	//screen box
+	canvas_context.strokeRect(190, 30, 450, 350);
+	
+	//line under player name
+	canvas_context.beginPath();
+	canvas_context.moveTo(0, 30);
+	canvas_context.lineTo(640, 30);
+	canvas_context.closePath();
+	canvas_context.stroke();
+	
+	
+	canvas_context.fillStyle = "white";	
+	canvas_context.font = "20px Courier";
+
+	canvas_context.fillText("Player: " + player.name, 5, 20);
+	canvas_context.fillText("Level: " + player.lvl, 5, 50);	
+	canvas_context.fillText("Health: " + player.hp, 5, 80);
+	canvas_context.fillText("Strength: " + player.str, 5, 110);
+	canvas_context.fillText("Defence: " + player.def, 5, 140);
+	canvas_context.fillText("Speed: " + player.spd, 5, 170);
+	canvas_context.fillText("Exp: " + player.exp, 5, 200);
+}
+
 //GAME
-$(document).ready(function() {
+
+	//ready the canvas
+	var canvas = document.getElementById('gameCanvas');
+	var canvas_context = gameCanvas.getContext("2d");
+	
+	drawMainUI();
+
+	
 	alert("Welcome! What is your name?");
 	player.name = prompt("Enter your name");
 	rollChar();
-	alert("Your stats are:- Health: " + player.maxhp + ", Strength: " + player.str + ", Speed: " + player.spd);
+
+	drawMainUI();
 	
-	$('#lvl1_2btn').click(function() {
+
+	
+	
+	$('#fightlvl1_2').click(function() {
 		randomBattle(1,2);
+		drawMainUI();
 	});
 	
-	$('#lvl3_4btn').click(function() {
+	$('#fightlvl3_4').click(function() {
 		randomBattle(3,4);
+		drawMainUI();
 	});
 	
-	$('#lvl5_6btn').click(function() {
+	$('#fightlvl5_6').click(function() {
 		randomBattle(5,6);
+		drawMainUI();
 	});
 	
 	$('#bossbtn').click(function() {
