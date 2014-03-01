@@ -447,7 +447,7 @@ function drawMainUI() {
 	canvas_context.strokeStyle = "white";
 	canvas_context.strokeRect(0, 30, 190, 185);	
 	
-	//screen box
+	//battle screen box
 	canvas_context.strokeRect(190, 30, 450, 350);
 	
 	//line under player name
